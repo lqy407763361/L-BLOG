@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{include file="Common:seo" /}
+</head>
+<body>
+	<!--header-->
+	<header class="login-header">
+		<h1><a href="javascript:void(0);">L-BLOG</a></h1>
+	</header>
+
+	<!--content-->
+	<div class="login-content">
+		<div class="login-box">
+			<div class="login-title">
+				<i class="fa fa-lock"></i>&nbsp;&nbsp;<span>请输入您的登录信息</span>
+			</div>
+			<div class="error-alert fade">
+				<i class="fa fa-exclamation-circle"></i>&nbsp;<span class="error-msg"></span><i class="fa fa-close alert-dismissible"></i>
+			</div>
+			<form class="form-detail" id="form-data">
+				<div class="form-group">
+					<label>账号</label>
+					<div class="input-group">
+						<span class="form-icon"><i class="fa fa-user"></i></span>
+						<input type="text" name="name" class="form-control" placeholder="Username">
+					</div>
+				</div>
+				<div class="form-group">
+					<label>密码</label>
+					<div class="input-group">
+						<span class="form-icon"><i class="fa fa-lock"></i></span>
+						<input type="password" name="password" class="form-control" placeholder="Password">
+					</div>
+				</div>
+				<div class="form-group admin-captcha">
+				    <label>验证码</label>
+				    <table>
+						<tr>
+							<td><input type="text" name="captcha" class="form-control" placeholder="Captcha"></td>
+							<td><img src="{:url('admin/login/createCaptcha')}" onclick="this.src=this.src+'?'+Math.random();"></td>
+						</tr>
+					</table>
+				</div>
+				<button type="button" class="info-msg" id="sub-form">登录</button>
+			 </form>
+		</div>
+		
+		<!--footer-->
+		{include file="Common:footer" /}
+	</div>
+
+<!--javascript-->
+<script src="__STATIC__/common/javascript/jquery-3.3.1.min.js"></script>
+<script src="__STATIC__/admin/javascript/common.js"></script>
+<script>
+$(function(){
+	$("#sub-form").click(function(){
+		var formData = new FormData(document.getElementById("form-data")),
+			url = "{:url('admin/login/loginAction')}",
+			success_url = "{:url('admin/index/index')}";
+
+		$.ajax({
+			type : "POST",
+			url : url,
+			data : formData,
+			dataType : "json",
+			processData : false,
+			contentType : false,
+			beforeSend : function(){
+				$(".loading-image").removeClass("fade");
+			},
+			success : function(data){
+				$(".msg-popup-content").text(data.msg);
+				$("#msg-popup").fadeIn(200);
+				$(".msg-popup-button>a").click(function(){
+					if(data.code == 1){
+						window.location.href = success_url;
+					}else{
+						$("#msg-popup").fadeOut(200);
+						$(".admin-captcha img").click();
+					}
+				});
+			},
+			complete : function(){
+				$(".loading-image").addClass("fade");
+			}
+		});
+	});
+})
+</script>
+</body>
+</html>

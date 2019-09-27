@@ -1,0 +1,16 @@
+{if !empty($result['breadcrumb'])}
+<h2>{$result['breadcrumb']['title']}</h2>
+{if $result['breadcrumb']['count'] > 0}
+<ul class="breadcrumb">
+	{volist name="result['breadcrumb']['list']" key="k" id="vo"}
+	<li><a {if $k == $result['breadcrumb']['count']}class="active"{else}href="{$vo['href']}"{/if}>{$vo['text']}</a></li>
+	{/volist}
+</ul>
+{/if}
+{else}
+<h2>L-BLOG</h2>
+<ul class="breadcrumb">
+	<li><a href="{:url('admin/index/index')}">L-BLOG</a></li>
+	<li><a href="{:url('admin/index/index')}">后台管理系统</a></li>
+</ul>
+{/if}

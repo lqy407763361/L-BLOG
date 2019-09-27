@@ -1,0 +1,43 @@
+<nav class="mobile-nav">
+	<div class="close-menu"><i class="fa fa-times-circle-o mobile-close"></i></div>
+	<div style="clear:both;"></div>
+	<ul>
+		<li><a href="{:url('index/index/index')}">首页</a></li>
+		<li><a href="{:url('index/article/index')}">文章</a></li>
+		<li><a href="{:url('index/about/index')}">关于</a></li>
+		{if $Think.cookie.name == ''}
+		<li><a href="javascript:void(0);" class="login_button">登录</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" class="register_button">注册</a></li>
+		{else}
+		<li><a href="javascript:void(0);">{$Think.cookie.name}</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" class="login-off">退出</a></li>
+		{/if}
+	</ul>
+</nav>
+<header>
+	<div class="container">
+		<h1><a href="{:url('index/index/index')}">L-BLOG</a></h1>
+		<ul class="pc-nav">
+			<li {if request()->controller() == 'Index'}class="nav-active"{/if}><a href="{:url('index/index/index')}">首页</a></li>
+			<li {if request()->controller() == 'Article'}class="nav-active"{/if}><a href="{:url('index/article/index')}">文章</a></li>
+			<li {if request()->controller() == 'About'}class="nav-active"{/if}><a href="{:url('index/about/index')}">关于</a></li>
+		</ul>
+		<button type="button" class="mobile-nav-button">
+			<i class="fa fa-bars"></i>
+		</button>
+		<ul class="login-nav">
+			{if $Think.cookie.name == ''}
+			<li>
+				<a href="javascript:void(0);" class="login_button">
+				<i class="fa fa-sign-in"></i>&nbsp;&nbsp;登录</a>&nbsp;/
+				<a href="javascript:void(0);" class="register_button">注册</a>
+			</li>
+			{else}
+			<li>
+				<a href="javascript:void(0);">
+				{$Think.cookie.name}</a>&nbsp;/
+				<a href="javascript:void(0);" class="login-off">退出</a>
+			</li>
+			{/if}
+		</ul>
+		<div style="clear:both;"></div>
+	</div>
+</header>

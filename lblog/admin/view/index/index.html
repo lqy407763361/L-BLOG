@@ -1,0 +1,82 @@
+{extend name="common/layout" /}
+
+	{block name="content"}
+	{include file="Common:breadcrumb" /}
+	<div class="statistics-number">
+		<div class="preview">
+			<div class="title">文章数量</div>
+			<div class="body"><i class="fa fa-book"></i><span>{$result['article_count']}</span></div>
+			<div class="move"><a href="{:url('admin/article/index')}">查看更多</a></div>
+		</div>
+		<div class="preview">
+			<div class="title">消息数量</div>
+			<div class="body"><i class="fa fa-envelope"></i><span>{$result['message_count']}</span></div>
+			<div class="move"><a href="{:url('admin/message/index')}">查看更多</a></div>
+		</div>
+		<div class="preview">
+			<div class="title">会员数量</div>
+			<div class="body"><i class="fa fa-user"></i><span>{$result['user_count']}</span></div>
+			<div class="move"><a href="{:url('admin/user/index')}">查看更多</a></div>
+		</div>
+		<div class="preview">
+			<div class="title">管理员数量</div>
+			<div class="body"><i class="fa fa-vcard"></i><span>{$result['admin_count']}</span></div>
+			<div class="move"><a href="{:url('admin/admin/index')}">查看更多</a></div>
+		</div>
+	</div>
+	<div style="clear:both;"></div>
+	<div class="index-panel-box">
+		<div class="index-panel">
+			<div class="panel-title">我的后台</div>	
+			<div id="panel-body">
+				<ul>
+					<li>您好，{$result['admin_nickname']}</li>
+					<li>所属角色：{$result['admin_group_name']}</li>
+				</ul>
+				<ul>
+					<li>您上次登录时间为：{$Think.session.admin_last_login_time}</li>
+					<li>IP地址：{$Think.session.admin_last_login_ip}</li>
+				</ul>
+				<ul>
+					<li>您本次登录时间为：{$result['admin_login_time']}</li>
+					<li>IP地址：{$result['admin_login_ip']}</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="chart-box">
+		<div class="chart">
+			<div class="chart-title">最近一周来访人数</div>	
+			<div id="cart-body"></div>
+		</div>
+	</div>
+	<div style="clear:both;"></div>
+	{/block}
+
+{block name="javascript"}
+<script src="__STATIC__/common/javascript/jquery-3.3.1.min.js"></script>
+<script src="__STATIC__/admin/javascript/common.js"></script>
+<script src="__STATIC__/common/javascript/echarts.common.min.js"></script>
+<script>
+var visit_sum = {:json_encode($result['visit_sum'])},
+	myChart = echarts.init(document.getElementById('cart-body')),
+	option = {
+	    title: {},
+	    tooltip: {},
+	    legend: {},
+	    xAxis: {
+	        data: ["周一","周二","周三","周四","周五","周六","周日"]
+	    },
+	    yAxis: {},
+	    series: [{
+	        name: '访问人数',
+	        type: 'bar',
+	        data: visit_sum,
+	        itemStyle:{  
+	            normal:{color:'#ab78ba'}  
+	        }  
+	    }]
+	};
+myChart.setOption(option);
+</script>
+{/block}

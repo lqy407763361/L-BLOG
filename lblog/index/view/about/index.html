@@ -1,0 +1,37 @@
+{extend name="common/layout" /}
+
+	{block name="content"}
+	<div class="container">
+		<div class="x-placeholder"></div>
+		<div class="content-left">
+			<h2>联系作者</h2>
+			<div class="description-box">{$result['content']['content']|raw}</div>
+			<form id="contact-form">
+				<div class="form-group">
+					<label>标题</label>
+					<input type="text" class="form-control" name="title">
+				</div>
+				<div class="form-group">
+					<label>正文</label>
+					<textarea class="form-control" rows="10" name="content"></textarea>
+				</div>
+				<div class="form-group">
+					<div class="info-msg" id="contact-send">发送</div>
+				</div>
+			</form>
+		</div>
+		<div class="content-right">
+			<div class="about-author">
+				<h2>关于作者</h2>
+				<div class="author-portrait">
+				<a href="http://weibo.com/louqinyu" target="_blank"><img src="http://tvax3.sinaimg.cn/crop.0.0.640.640.180/005tFtr1ly8fii5pclqg2j30hs0hs0ts.jpg" alt=""></a>
+				</div>
+				<div class="author-separate">
+				<a href="http://weibo.com/louqinyu" target="_blank"><p>废废废废导</p></a>
+				<wb:follow-button uid="5019062503" type="red_1" style="display:block;"></wb:follow-button>	
+				</div>
+			</div>
+		</div>
+		<div style="clear:both;"></div>
+	</div>
+	{/block}

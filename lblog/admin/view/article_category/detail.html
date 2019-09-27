@@ -1,0 +1,98 @@
+{extend name="common/layout" /}
+
+	{block name="content"}
+	{include file="Common:breadcrumb" /}
+	<div class="operation-bar">
+		<a class="info-msg" id="sub-form"><i class="fa fa-save"></i></a>
+		<a href="{:url('admin/articleCategory/index')}" class="default-msg"><i class="fa fa-reply"></i></a>
+	</div>	
+	<div style="clear:both;"></div>
+	<div class="content-box">
+		<div class="content-title"><i class="fa fa-list"></i>&nbsp;文章分类详情</div>
+		<div class="content-body">
+			<div class="content-search">
+				<div class="form-group content-search-input">
+					<label>发布时间</label>
+					<input type="text" class="form-control" value="{$result['add_time']}" disabled="disabled">
+				</div>
+				<div class="form-group content-search-input">
+					<label>最后编辑</label>
+					<input type="text" class="form-control" value="{$result['edit_time']}" disabled="disabled">
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			<form class="form-detail" id="form-data">
+				<div class="form-group">
+					<label class="required">分类名称</label>
+					<div class="form-detail-input">
+						<input type="text" name="name" class="form-control" placeholder="分类名称" value="{$result['name']}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label>简介</label>
+					<div class="form-detail-textarea">
+						<textarea name="description" cols="30" rows="5" class="form-control">{$result['description']}</textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>排序</label>
+					<div class="form-detail-order">
+						<input type="text" name="sort_order" class="form-control" value="{$result['sort_order']}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label>状态</label>
+					<div class="form-detail-select">
+						<select name="status" class="form-control">
+							<option value="1" {$result['status'] == 1 ? 'selected' : ''}>启用</option>
+							<option value="0" {$result['status'] == 0 ? 'selected' : ''}>禁用</option>
+						</select>
+					</div>
+				</div>
+				<input type="hidden" value="{$result['id']}" name="id">
+			  	<input type="hidden" value="{$Think.session.admin_token}" name="admin_token">
+				<div style="clear:both;"></div>
+			</form>
+		</div>
+	</div>
+	{/block}
+	
+{block name="javascript"}
+<script src="__STATIC__/common/javascript/jquery-3.3.1.min.js"></script>
+<script src="__STATIC__/admin/javascript/common.js"></script>
+<script>
+$(function(){
+	$("#sub-form").click(function(){
+		var formData = new FormData(document.getElementById("form-data")),
+			url = ({$result['id']} <= 0) ? "{:url('admin/articleCategory/addAction')}" : "{:url('admin/articleCategory/editAction')}",
+			success_url = "{:url('admin/articleCategory/index')}";
+
+		$.ajax({
+			type : "POST",
+			url : url,
+			data : formData,
+			dataType : "json",
+			processData : false,
+			contentType : false,
+			beforeSend : function(){
+				$(".loading-image").removeClass("fade");
+			},
+			success : function(data){
+				$(".msg-popup-content").text(data.msg);
+				$("#msg-popup").fadeIn(200);
+				$(".msg-popup-button>a").click(function(){
+					if(data.code == 1){
+						window.location.href = success_url;
+					}else{
+						$("#msg-popup").fadeOut(200);
+					}
+				});
+			},
+			complete : function(){
+				$(".loading-image").addClass("fade");
+			}
+		});
+	});
+})
+</script>
+{/block}

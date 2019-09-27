@@ -1,0 +1,27 @@
+{extend name="common/layout" /}
+	
+	{block name="content"}
+	<div class="container">
+		<div class="x-placeholder"></div>
+		<div class="content-left">
+			{volist name="$result['list']" id="vo"}
+			<div class="description-box">
+				<h3><a href="{:url('index/article/detail', ['id' => $vo.id])}">{$vo.title}</a></h3>
+				<p class="time">{$vo.add_time|date='Y-m-d'}</p>
+			</div>
+			{/volist}
+			{$result['page']|raw}
+		</div>
+		<div class="content-right">
+			<div class="category-column">
+				<h2>分类标题</h2>
+				{volist name="$result['article_category_list']" id="vo"}
+				<div class="description-box">
+					<p><a href="{:url('index/article/index', ['category_id' => $vo.id])}">{$vo.name}</a></p>
+				</div>
+				{/volist}
+			</div>
+		</div>
+		<div style="clear:both;"></div>
+	</div>
+	{/block}

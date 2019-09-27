@@ -1,0 +1,41 @@
+{extend name="common/layout" /}
+
+	{block name="content"}
+	<div class="container">
+		<div class="x-placeholder"></div>
+		<div class="content-left">
+			{if $result['breadcrumb']['count'] > 0}
+			<ul class="breadcrumb">
+				{volist name="$result['breadcrumb']['list']" key="k" id="vo"}
+			    <li>
+			    	<a {if $k == $result['breadcrumb']['count']}class="active"{else}href="{$vo['href']}"{/if}">{$vo.text}</a>
+			    </li>
+			    {if $k != $result['breadcrumb']['count']}
+			    <span>/</span>
+			    {/if}
+			    {/volist}
+			</ul>
+			{/if}
+			<div class="content-detail">
+				<h2>{$result['title']}</h2>
+				<p class="detail-add-time">{$result.add_time|date='Y-m-d'}</p>
+				<p class="detail-body">{$result['content']}</p>
+				<button type="button" class="default-msg" onclick="javascript:history.back();">返回</button>
+				{volist name="$result['preview']" id="vo"}
+				<p><a href="{$vo.url}">{$vo.name}{$vo.title}</a></p>
+				{/volist}
+			</div>
+		</div>
+		<div class="content-right">
+			<div class="category-column">
+				<h2>分类标题</h2>
+				{volist name="$result['article_category_list']" id="vo"}
+				<div class="description-box">
+					<p><a href="{:url('index/article/index', ['category_id' => $vo.id])}">{$vo.name}</a></p>
+				</div>
+				{/volist}
+			</div>
+		</div>
+		<div style="clear:both;"></div>
+	</div>
+	{/block}

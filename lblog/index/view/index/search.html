@@ -1,0 +1,31 @@
+{extend name="common/layout" /}
+
+	{block name="content"}
+	<div class="container">
+		<div class="x-placeholder"></div>
+		<div class="content-left">
+			<h2>搜索内容</h2>
+			{volist name="$result['list']" id="vo"}
+			<div class="description-box">
+				<h3><a href="{:url('index/article/detail', ['id' => $vo.id])}">{$vo.title}</a></h3>
+				<p class="time">{$vo.add_time|date='Y-m-d'}</p>
+			</div>
+			{/volist}
+			{$result['page']|raw}
+		</div>
+		<div class="content-right">
+			<div class="index-search">
+				<h2>站内搜索</h2>
+				<form action="{:url('index/index/search')}" method="post">
+					<div class="form-group">
+						<ul>
+					  		<li><input type="text" class="form-control" name="search_title" value="{$search_title}" placeholder="请输入关键词"></li>
+					  		<li><button class="info-msg"><i class="fa fa-search"></i></button></li>
+					  	</ul>
+				  	</div>
+				</form>
+			</div>
+		</div>
+		<div style="clear:both;"></div>
+	</div>
+	{/block}

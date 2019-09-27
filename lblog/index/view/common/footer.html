@@ -1,0 +1,179 @@
+<footer>
+	<div class="container">
+		<div class="footer-left">
+			<ul class="if-mobile">
+				<li>L-BLOG 2017-<?php echo date('Y', time())?></li>
+				<li>Powered by L-WEB</li>
+				<div style="clear:both;"></div>
+			</ul>
+		</div>
+		<div class="footer-right">
+			<ul>
+				<li><a href="" target="_blank"><i class="fa fa-qq fa-2x"></i></a></li>
+				<li><a href="javascript:void(0);"><i class="fa fa-weixin fa-2x"></i></a></li>
+				<li><a href="" target="_blank"><i class="fa fa-weibo fa-2x"></i></a></li>
+				<li><a href="" target="_blank"><i class="fa fa-github fa-2x"></i></a></li>
+			</ul>
+			{if !empty($result['site_config']['wechat_image'])}
+			<div class="wechat-alert"><img src="{$result['site_config']['wechat_image']}"></div>
+			{/if}
+			<div style="clear:both;"></div>
+		</div>
+		<div style="clear:both;"></div>
+	</div>
+</footer>
+<input type="hidden" value="author:lqy407763361|project:L-WEB/L-BLOG">
+
+<!--login-popup-->
+<div id="login-popup">
+	<ul class="login-popup-tab">
+		<li class="login-tab active" data-tab="login-content"><a href="javascript:void(0);"><h3>登录</h3></a></li>
+		<li class="register-tab" data-tab="register-content"><a href="javascript:void(0);"><h3>注册</h3></a></li>
+		<div style="clear:both;"></div>
+	</ul>
+	<div class="login-popup-body">
+		<div class="login-content active">
+			<form id="form-login">
+				<div class="form-group">
+					<label>账号</label>
+					<input type="text" class="form-control" name="name" placeholder="2-10位字符长度">
+					<span class="name-msg"></span>
+				</div>
+				<div class="form-group">
+					<label>密码</label>
+					<input type="password" class="form-control" name="password" placeholder="6-12位英文/数字密码">
+					<span class="password-msg"></span>
+				</div>
+				<div class="form-group">
+					<label class="checkbox">
+						<input type="checkbox" name="is_remember" value="1">&nbsp;&nbsp;30天内自动登录
+					</label>
+					<span class="captcha-msg"></span>
+					<div style="clear:both;"></div>
+				</div>
+				<div class="form-group">
+					<a href="javascript:void(0);" class="info-msg" id="sub-login">登录</a>
+					<span class="sub-msg"></span>
+				</div>
+			</form>
+		</div>
+		<div class="register-content fade">
+			<form id="form-register">
+				<div class="form-group">
+					<label>账号</label>
+					<input type="text" class="form-control" name="name" placeholder="2-10位字符长度">
+					<span class="name-msg"></span>
+				</div>
+				<div class="form-group">
+					<label>密码</label>
+					<input type="password" class="form-control" name="password" placeholder="6-12位英文/数字密码">
+					<span class="password-msg"></span>
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control verification_code" name="captcha" placeholder="验证码">
+					<div style="width:100px;height:30px;float:left;margin-top:3px;">
+						<img src="{:url('index/index/createCaptcha')}" onclick="this.src=this.src+'?'+Math.random();">
+					</div>
+					<span class="captcha-msg"></span>
+					<div style="clear:both;"></div>
+				</div>
+				<div class="form-group">
+					<a href="javascript:void(0);" class="info-msg" id="sub-register">注册</a>
+					<span class="sub-msg"></span>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!--msg-popup-->
+<div id="msg-popup">
+	<div class="msg-frame">
+		<div class="msg-popup-title">提示信息</div>
+		<div class="msg-popup-content"></div>
+		<div class="msg-popup-button">
+			<a>知道了</a>
+		</div>
+	</div>
+</div>
+<div class="mask"></div>
+
+<script src="__STATIC__/common/javascript/jquery-3.3.1.min.js"></script>
+<script src="__STATIC__/index/javascript/common.js"></script>
+<script>
+$(function(){
+	$("#sub-register").click(function(){
+		var formData = new FormData(document.getElementById("form-register")),
+			url = "{:url('index/index/register')}", type = "form-register";
+		joinWeb(url, formData, type);
+	});
+	$("#sub-login").click(function(){
+		var formData = new FormData(document.getElementById("form-login")),
+			url = "{:url('index/index/login')}", type = "form-login";
+		joinWeb(url, formData, type);
+	});
+
+	$(".login-off").click(function(){
+		$.ajax({
+			type : "POST",
+			url : "{:url('index/index/loginOff')}",
+			data : '',
+			dataType : "json",
+			success : function(data){
+				$(".msg-popup-content").text(data.msg);
+				$("#msg-popup").fadeIn(200);
+				$(".msg-popup-button>a").click(function(){
+					window.location.reload();
+				});
+			}
+		});
+	});
+
+	//关于我
+	$("#contact-send").click(function(){
+		var formData = new FormData(document.getElementById("contact-form")),
+			url = "{:url('index/about/sendMessage')}",
+			success_url = "{:url('index/about/index')}";
+
+		$.ajax({
+			type : "POST",
+			url : url,
+			data : formData,
+			dataType : "json",
+			processData : false,
+			contentType : false,
+			success : function(data){
+				$(".msg-popup-content").text(data.msg);
+				$("#msg-popup").fadeIn(200);
+				$(".msg-popup-button>a").click(function(){
+					if(data.code == 1){
+						window.location.href = success_url;
+					}else{
+						$("#msg-popup").fadeOut(200);
+					}
+				});
+			},
+		});
+	});
+})
+
+function joinWeb(url, formData, type){
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : formData,
+		dataType : "json",
+		processData: false,
+		contentType: false,
+		success : function(data){
+			var captcha_msg = $("#"+type+" .captcha-msg"), name_msg = $("#"+type+" .name-msg"), password_msg = $("#"+type+" .password-msg");
+			$("#"+type+" img").click();
+
+			(data.code == -1) ? captcha_msg.text(data.msg).show() : captcha_msg.hide();
+			(data.code == -2) ? name_msg.text(data.msg).show() : name_msg.hide();
+			(data.code == -3) ? password_msg.text(data.msg).show() : password_msg.hide();
+			(data.code == 1) ? window.location.reload() : '';
+		}
+	});
+}
+</script>

@@ -1,0 +1,93 @@
+{extend name="common/layout" /}
+
+	{block name="content"}
+	{include file="Common:breadcrumb" /}
+	<div class="operation-bar">
+		<a class="info-msg" id="sub-form"><i class="fa fa-save"></i></a>
+		<a href="{:url('admin/message/index')}" class="default-msg"><i class="fa fa-reply"></i></a>
+	</div>	
+	<div style="clear:both;"></div>
+	<div class="content-box">
+		<div class="content-title"><i class="fa fa-list"></i>&nbsp;信息详情</div>
+		<div class="content-body">
+			<form class="form-detail x-placeholder" id="form-data">
+				<div class="form-group">
+					<label>标题</label>
+					<div class="form-detail-input">
+						<input type="text" class="form-control" value="{$result['title']}" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label>发送人</label>
+					<div class="form-detail-input">
+						<input type="text" class="form-control" value="{$result['name']}" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label>发送时间</label>
+					<div class="form-detail-input">
+						<input type="text" class="form-control" value="{$result['add_time']}" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label>内容</label>
+					<div class="form-detail-textarea">
+						<textarea cols="30" rows="10" class="form-control" disabled="disabled">{$result['content']}</textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="required">状态</label>
+					<div class="form-detail-select">
+						<select name="status" class="form-control">
+							<option value="1" {$result['status'] == 1 ? 'selected' : ''}>已读</option>
+							<option value="0" {$result['status'] == 0 ? 'selected' : ''}>未读</option>
+						</select>
+					</div>
+				</div>
+				<input type="hidden" value="{$result['id']}" name="id">
+				<input type="hidden" value="{$Think.session.admin_token}" name="admin_token">
+				<div style="clear:both;"></div>
+			</form>
+		</div>
+	</div>
+	{/block}
+
+{block name="javascript"}
+<script src="__STATIC__/common/javascript/jquery-3.3.1.min.js"></script>
+<script src="__STATIC__/admin/javascript/common.js"></script>
+<script>
+$(function(){
+	$("#sub-form").click(function(){
+		var formData = new FormData(document.getElementById("form-data")),
+			url = "{:url('admin/message/editAction')}",
+			success_url = "{:url('admin/message/index')}";
+
+		$.ajax({
+			type : "POST",
+			url : url,
+			data : formData,
+			dataType : "json",
+			processData : false,
+			contentType : false,
+			beforeSend : function(){
+				$(".loading-image").removeClass("fade");
+			},
+			success : function(data){
+				$(".msg-popup-content").text(data.msg);
+				$("#msg-popup").fadeIn(200);
+				$(".msg-popup-button>a").click(function(){
+					if(data.code == 1){
+						window.location.href = success_url;
+					}else{
+						$("#msg-popup").fadeOut(200);
+					}
+				});
+			},
+			complete : function(){
+				$(".loading-image").addClass("fade");
+			}
+		});
+	});
+})
+</script>
+{/block}

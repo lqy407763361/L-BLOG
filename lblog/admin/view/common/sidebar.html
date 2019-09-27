@@ -1,0 +1,59 @@
+<div class="sidebar">
+	<div class="sidebar-title">
+		<ul>
+			<li><h2>{$result['admin_nickname']}</h2></li>
+			<li><i class="fa fa-user"></i><small>{$result['admin_group_name']}</small></li>
+		</ul>
+	</div>
+	<ul class="sidebar-list">
+		<li><a href="{:url('admin/index/index')}"><i class="fa fa-dashboard"></i><span>仪表盘</span></a></li>
+		<li {if in_array(request()->controller(), array('Article','ArticleCategory'))}id="sidebar-show"{/if}><a {if in_array(request()->controller(), array('Article','ArticleCategory'))}class="sl-name-down"{else}class="sl-name"{/if}><i class="fa fa-files-o"></i><span>文章管理</span></a>
+			<ul class="sidebar-list-child">
+				{if in_array('article', session('view_power'))}
+				<li><a href="{:url('admin/article/index')}"><span>文章列表</span></a></li>
+				{/if}
+				{if in_array('articleCategory', session('view_power'))}
+				<li><a href="{:url('admin/articleCategory/index')}"><span>文章分类列表</span></a></li>
+				{/if}
+			</ul>
+		</li>
+		<li {if in_array(request()->controller(), array('About'))}id="sidebar-show"{/if}><a {if in_array(request()->controller(), array('About'))}class="sl-name-down"{else}class="sl-name"{/if}><i class="fa fa-envelope"></i><span>单页管理</span></a>
+			<ul class="sidebar-list-child">
+				{if in_array('about', session('view_power'))}
+				<li><a href="{:url('admin/about/index')}"><span>关于我</span></a></li>
+				{/if}
+			</ul>
+		</li>
+		<li {if in_array(request()->controller(), array('Message'))}id="sidebar-show"{/if}><a {if in_array(request()->controller(), array('Message'))}class="sl-name-down"{else}class="sl-name"{/if}><i class="fa fa-envelope"></i><span>信息管理</span></a>
+			<ul class="sidebar-list-child">
+				{if in_array('message', session('view_power'))}
+				<li><a href="{:url('admin/message/index')}"><span>我的新消息</span></a></li>
+				{/if}
+			</ul>
+		</li>
+		<li {if in_array(request()->controller(), array('User'))}id="sidebar-show"{/if}><a {if in_array(request()->controller(), array('User'))}class="sl-name-down"{else}class="sl-name"{/if}><i class="fa fa-user"></i><span>会员管理</span></a>
+			<ul class="sidebar-list-child">
+				{if in_array('user', session('view_power'))}
+				<li><a href="{:url('admin/user/index')}"><span>会员列表</span></a></li>
+				{/if}
+			</ul>
+		</li>
+		<li {if in_array(request()->controller(), array('Admin','AdminGroup'))}id="sidebar-show"{/if}><a {if in_array(request()->controller(), array('Admin','AdminGroup'))}class="sl-name-down"{else}class="sl-name"{/if}><i class="fa fa-vcard"></i><span>管理员管理</span></a>
+			<ul class="sidebar-list-child">
+				{if in_array('admin', session('view_power'))}
+				<li><a href="{:url('admin/admin/index')}"><span>管理员列表</span></a></li>
+				{/if}
+				{if in_array('adminGroup', session('view_power'))}
+				<li><a href="{:url('admin/adminGroup/index')}"><span>管理员群组列表</span></a></li>
+				{/if}
+			</ul>
+		</li>
+		<li {if in_array(request()->controller(), array('SiteConfig'))}id="sidebar-show"{/if}><a {if in_array(request()->controller(), array('SiteConfig'))}class="sl-name-down"{else}class="sl-name"{/if}><i class="fa fa-cogs"></i><span>系统管理</span></a>
+			<ul class="sidebar-list-child">
+				{if in_array('siteConfig', session('view_power'))}
+				<li><a href="{:url('admin/siteConfig/index')}"><span>网站设置</span></a></li>
+				{/if}
+			</ul>
+		</li>
+	</ul>
+</div>

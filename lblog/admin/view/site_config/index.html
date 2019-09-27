@@ -1,0 +1,225 @@
+{extend name="common/layout" /}
+
+	{block name="content"}
+	{include file="Common:breadcrumb" /}
+	<div class="operation-bar">
+		<a class="info-msg" id="sub-form"><i class="fa fa-save"></i></a>
+	</div>	
+	<div style="clear:both;"></div>
+	<div class="content-box">
+		<div class="content-title"><i class="fa fa-list"></i>&nbsp;网站设置</div>
+		<div class="content-body">
+			<form class="form-detail" id="form-data">
+				<ul class="config-nav-tabs">
+					<li class="active"><a href="#tag-seo" data-tab="tag-seo">SEO</a></li>
+					<li><a data-tab="tag-general">常规</a></li>
+					<li><a data-tab="tag-article">文章</a></li>
+					<li><a data-tab="tag-email">邮件</a></li>
+					<li><a data-tab="tag-server">服务器</a></li>
+					<div style="clear:both;"></div>
+				</ul>
+				<div id="tag-seo">
+					<div class="form-group">
+						<label class="required">Meta标题</label>
+						<div class="form-detail-input">
+							<input type="text" name="meta_title" class="form-control" value="{$result['meta_title']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Meta标签描述</label>
+						<div class="form-detail-textarea">
+							<textarea name="meta_tag_description" cols="30" rows="5" class="form-control">{$result['meta_tag_description']}</textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Meta标签关键词</label>
+						<div class="form-detail-textarea">
+							<textarea name="meta_tag_keywords" cols="30" rows="5" class="form-control">{$result['meta_tag_keywords']}</textarea>
+						</div>
+					</div>
+				</div>
+				<div id="tag-general" class="fade">
+					<div class="form-group">
+						<label>QQ</label>
+						<div class="form-detail-input">
+							<input type="text" name="qq" class="form-control" value="{$result['qq']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label>微信(100X100)</label>
+						<div class="form-detail-input updateimage-area">
+							<a href="javascript:void(0);">
+							<div class="image-box">
+								{if !empty($result['wechat_image'])}
+								<img src="{$result['wechat_image_url']}" id="show" style="width:100px;height:100px;">
+								{else}
+								<img src="__STATIC__/admin/image/no_image.jpg" id="show" style="width:100px;height:100px;">
+								{/if}
+							</div>
+							</a>
+							<div class="img-operation">
+								<div class="oper-arrow"></div>
+								<div class="img-oper-box">
+									<a href="javascript:void(0);" onclick="image_file();return false;" class="info-msg image-edit"><i class="fa fa-pencil"></i></a>
+									<a href="javascript:void(0);" class="danger-msg image-delete"><i class="fa fa-trash-o"></i></a>
+								</div>
+							</div>
+						</div>
+						<input type="file" name="wechat_image" id="image-file" style="display:none;">
+						<input type="hidden" name="wechat_image_url" id="image-url" value="{$result['wechat_image']}">
+					</div>
+					<div class="form-group">
+						<label>新浪微博</label>
+						<div class="form-detail-input">
+							<input type="text" name="sinaweibo" class="form-control" value="{$result['sinaweibo']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label>GITHUB</label>
+						<div class="form-detail-input">
+							<input type="text" name="github" class="form-control" value="{$result['github']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="required">网站最大登录次数</label>
+						<div class="form-detail-input">
+							<input type="text" name="site_login_max_number" class="form-control" value="{$result['site_login_max_number']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="required">后台最大登陆次数</label>
+						<div class="form-detail-input">
+							<input type="text" name="admin_login_max_number" class="form-control" value="{$result['admin_login_max_number']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="required">网站底部配置信息</label>
+						<div class="form-detail-textarea">
+							<textarea id="editor" name="site_config" cols="20" rows="5">{$result.site_config}</textarea>
+						</div>
+					</div>
+				</div>
+				<div id="tag-article" class="fade">
+					<div class="form-group">
+						<label class="required">网站列表显示数量</label>
+						<div class="form-detail-input">
+							<input type="text" name="site_list_limit" class="form-control" value="{$result['site_list_limit']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="required">后台列表显示数量</label>
+						<div class="form-detail-input">
+							<input type="text" name="admin_list_limit" class="form-control" value="{$result['admin_list_limit']}">
+						</div>
+					</div>
+				</div>
+				<div id="tag-email" class="fade">
+					<div class="form-group">
+						<label class="required">Email</label>
+						<div class="form-detail-input">
+							<input type="text" name="email" class="form-control" value="{$result['email']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="required">SMTP 主机</label>
+						<div class="form-detail-input">
+							<input type="text" name="smtp_host" class="form-control" value="{$result['smtp_host']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="required">SMTP 用户名</label>
+						<div class="form-detail-input">
+							<input type="text" name="smtp_username" class="form-control" value="{$result['smtp_username']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="required">SMTP 密码</label>
+						<div class="form-detail-input">
+							<input type="text" name="smtp_password" class="form-control" value="{$result['smtp_password']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="required">SMTP 端口</label>
+						<div class="form-detail-input">
+							<input type="text" name="smtp_port" class="form-control" value="{$result['smtp_port']}">
+						</div>
+					</div>
+				</div>
+				<div id="tag-server" class="fade">
+					<div class="form-group">
+						<label class="required">允许上传文件大小(M)</label>
+						<div class="form-detail-input">
+							<input type="text" name="allow_upload_size" class="form-control" value="{$result['allow_upload_size']}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="required">允许上传的文件类型</label>
+						<div class="form-detail-input">
+							<input type="text" name="allow_upload_type" class="form-control" value="{$result['allow_upload_type']}" placeholder="{$result['allow_upload_type']}">
+						</div>
+					</div>
+				</div>
+				<input type="hidden" value="{$result['id']}" name="id">
+				<input type="hidden" value="{$Think.session.admin_token}" name="admin_token">
+			</form>
+			<div style="clear:both;"></div>
+		</div>
+	</div>
+	{/block}
+	
+{block name="javascript"}
+<script src="__STATIC__/common/javascript/jquery-3.3.1.min.js"></script>
+<script src="__STATIC__/admin/javascript/common.js"></script>
+<script src="__STATIC__/common/javascript/ckeditor/ckeditor.js"></script>
+<script>
+window.onload = function(){
+    CKEDITOR.replace('editor');
+};
+
+$(function(){
+	$('#image-file').change(function(){
+    	var coverSize = document.getElementById("show");
+    	coverSize.style.width = "100px";
+		coverSize.style.height = "100px";
+    	$filePath = URL.createObjectURL(this.files[0]);
+    	$('#show').attr('src',$filePath);
+    });
+
+	$("#sub-form").click(function(){
+		for(instance in CKEDITOR.instances){
+			CKEDITOR.instances[instance].updateElement();
+		}
+		
+		var formData = new FormData(document.getElementById("form-data")),
+			url = ({$result['id']} <= 0) ? "{:url('admin/siteConfig/addAction')}" : "{:url('admin/siteConfig/editAction')}",
+			success_url = "{:url('admin/siteConfig/index')}";
+
+		$.ajax({
+			type : "POST",
+			url : url,
+			data : formData,
+			dataType : "json",
+			processData : false,
+			contentType : false,
+			beforeSend : function(){
+				$(".loading-image").removeClass("fade");
+			},
+			success : function(data){
+				$(".msg-popup-content").text(data.msg);
+				$("#msg-popup").fadeIn(200);
+				$(".msg-popup-button>a").click(function(){
+					if(data.code == 1){
+						window.location.href = success_url;
+					}else{
+						$("#msg-popup").fadeOut(200);
+					}
+				});
+			},
+			complete : function(){
+				$(".loading-image").addClass("fade");
+			}
+		});
+	});
+})
+</script>
+{/block}

@@ -1,0 +1,130 @@
+{extend name="common/layout" /}
+
+	{block name="content"}
+	{include file="Common:breadcrumb" /}
+	<div class="operation-bar">
+		<a href="{:url('admin/articleCategory/add')}" class="info-msg"><i class="fa fa-plus"></i></a>
+		<a id="sub-delete" class="danger-msg"><i class="fa fa-trash-o"></i></a>
+	</div>	
+	<div style="clear:both;"></div>
+	<div class="content-box">
+		<div class="content-title"><i class="fa fa-list"></i>&nbsp;编程分类</div>
+		<div class="content-body">
+			<form action="">
+				<div class="content-search">
+					<div class="form-group content-search-input">
+						<label>分类名称</label>
+						<input type="text" class="form-control" placeholder="分类名称" value="" id="search-name">
+					</div>
+					<div class="form-group content-search-select">
+						<label>状态</label>
+						<select class="form-control" id="search-status">
+					      <option value="" selected="selected">全部</option>
+					      <option value="1">启用</option>
+					      <option value="0">禁用</option>
+					    </select>
+					</div>
+					<button type="button" class="info-msg" id="sub-search"><i class="fa fa-search"></i>&nbsp;搜索</button>	
+					<div style="clear:both;"></div>
+				</div>
+				<table class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							<td align="center"><input type="checkbox" name="check_all"></td>
+							<td align="left"><a data-field="id" data-sort="asc">类型名称</a>&nbsp;&nbsp;<span class="up_triangle"></span></td>
+							<td align="left"><a data-field="status" data-sort="asc">状态</a>&nbsp;&nbsp;<span class="up_triangle"></span></td>
+							<td align="left"><a data-field="add_time" data-sort="asc">时间</a>&nbsp;&nbsp;<span class="up_triangle"></span></td>
+							<td align="right">操作</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr><td align="center" colspan="5" class="table-no-data">正在加载数据...</td></tr>
+					</tbody>
+				</table>
+			</form>
+			<div id="page"></div>
+			<div style="clear:both;"></div>
+		</div>
+	</div>
+	{/block}
+	
+{block name="javascript"}
+<script src="__STATIC__/common/javascript/jquery-3.3.1.min.js"></script>
+<script src="__STATIC__/admin/javascript/common.js"></script>
+<script>
+$(function(){
+	var data = {'data' : ''},
+		url = "{:url('admin/articleCategory/getListAction')}";
+
+	//初始载入列表
+	ajax_get_list(data, url);
+	
+	//点击搜索刷新列表
+	$("#sub-search").click(function(){
+		var data = {"search_name" : $("#search-name").val(), "search_status" : $("#search-status").val()};
+		ajax_get_list(data, url);
+	});
+
+	//点击表头刷新列表排序
+	$("thead a").click(function(){	
+		if($(this).data('sort') == 'asc'){
+			$(this).data('sort','desc');
+			$(this).siblings(".up_triangle").removeClass("up_triangle").addClass("del_triangle");
+		}else{
+			$(this).data('sort','asc');
+			$(this).siblings(".del_triangle").removeClass("del_triangle").addClass("up_triangle");
+		}
+		var data = {"field" : $(this).data('field'), "sort" : $(this).data('sort')};
+		ajax_get_list(data, url);
+	});
+
+	//删除
+	$("#sub-delete").click(function(){
+		if(confirm('确认删除？')){
+			var url = "{:url('admin/articleCategory/deleteAction')}";
+			ajax_delete_list(url);
+		}
+	});
+});
+
+//分页
+function ajax_page(page){
+	var data = {'page' : page, 'search_name' : $("#search-name").val(), 'search_status' : $("#search-status").val()}, 
+		url = "{:url('admin/articleCategory/getListAction')}";
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : data,
+		dataType : "json",
+		success : function(data){
+			ajax_assemble(data);
+			$("#page").html(data.data.page);
+		}
+	});
+}
+
+//本页面的AJAX拼接
+function ajax_assemble(data){
+	var html = '';
+	$("tbody").empty();
+	if(data.code == 1){
+		$.each(data.data.list.data, function(key, val){
+			html += '<tr>';
+			html += '<td align="center"><input type="checkbox" name="check_one[]" value="'+val['id']+'"></td>';
+			html += '<td align="text-left">'+val['name']+'</td>';
+			if(val['status'] == 1){
+				html += '<td align="left"><span style="color:green;">启用</span></td>';
+			}else{
+				html += '<td align="left"><span style="color:red;">禁用</span></td>';
+			}
+			html += '<td align="text-left">'+time_format(val['add_time'])+'</td>';
+			html += '<td align="right"><a href="{:url('admin/articleCategory/edit')}?id='+val['id']+'" class="info-msg" title="查看"><i class="fa fa-pencil"></i></a></td>';
+			html += '</tr>';
+		});
+	}else{
+		html += '<tr><td align="center" colspan="5" class="table-no-data">暂无数据！</td></tr>';	
+	}
+	$("tbody").html(html);
+}
+</script>
+{/block}
