@@ -75,9 +75,9 @@ header h1>a:hover{color:#000;}
 @keyframes run{from{margin-left:10px;}to{margin-left:20px;}}
 .sidebar-list-child li:hover span{
 	animation:run 0.5s forwards;
-	-moz-animation: run 0.5s forwards; /* Firefox */
-	-webkit-animation: run 0.5s forwards; /* Safari 和 Chrome */
-	-o-animation: run 0.5s forwards; /* Opera */
+	-moz-animation:run 0.5s forwards; /* Firefox */
+	-webkit-animation:run 0.5s forwards; /* Safari 和 Chrome */
+	-o-animation:run 0.5s forwards; /* Opera */
 }
 #sidebar-show .sidebar-list-child{display:block;}
 
